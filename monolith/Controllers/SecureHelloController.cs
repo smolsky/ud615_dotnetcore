@@ -17,6 +17,7 @@ namespace monolith.Controllers
     [Route("secure")]
     public class SecureHelloController : Controller
     {
+        [Authorize]
         [HttpGet]
         public JsonResult Get()
         {
