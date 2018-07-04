@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,12 +15,13 @@ namespace monolith.Controllers
 
     [Produces("application/json")]
     [Route("")]
-    public class HelloController : ControllerBase
+    public class HelloController : Controller
     {
         [HttpGet]
-        public ActionResult<string> Get()
+        public JsonResult Get()
         {
-            return "Hello";
+            var obj = new {Message = "Hello"};
+            return Json(obj);
         }
     }
 }
