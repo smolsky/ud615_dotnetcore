@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using monolith.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace monolith
 {
@@ -17,42 +19,13 @@ namespace monolith
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-            .AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
-            .AddBasic(options =>
-            {
-                options.Realm = "idunno";
-                options.AllowInsecureProtocol = true;
-                options.Events = new BasicAuthenticationEvents
-                {
-                    OnValidateCredentials = context =>
-                    {
-                        if (context.Username == context.Password)
-                        {
-                            var claims = new[]
-                            {
-                                new Claim(
-                                    ClaimTypes.NameIdentifier, 
-                                    context.Username, 
-                                    ClaimValueTypes.String, 
-                                    context.Options.ClaimsIssuer),
-                                new Claim(
-                                    ClaimTypes.Name, 
-                                    context.Username, 
-                                    ClaimValueTypes.String, 
-                                    context.Options.ClaimsIssuer)
-                            };
-
-                            context.Principal = new ClaimsPrincipal(
-                                new ClaimsIdentity(claims, context.Scheme.Name));
-                            context.Success();
-                        }
-
-                        return Task.CompletedTask;
-                    }
-                };
-            });
             // Add framework services.
+
+            services.AddAuthentication(
+                BasicAuthenticationDefaults.AuthenticationScheme)
+            .AddBasic(BasicAuthenticationDefaults.AuthenticationScheme, BasicAuthentication.Configure)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, JwtAuthentication.Configure);
+
             services.AddMvc();
         }
 
@@ -60,6 +33,7 @@ namespace monolith
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseAuthentication();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -71,6 +45,8 @@ namespace monolith
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            
         }
     }
 }

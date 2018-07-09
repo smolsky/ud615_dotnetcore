@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,19 +9,21 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace monolith.Controllers
 {
 
     [Produces("application/json")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("secure")]
     public class SecureHelloController : Controller
     {
-        [Authorize]
         [HttpGet]
+        
         public JsonResult Get()
         {
-            var obj = new {Message = "Hello"};
+            var obj = new { Message = "Hello (secure)" };
             return Json(obj);
         }
     }
