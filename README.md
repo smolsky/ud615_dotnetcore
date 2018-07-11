@@ -1,10 +1,10 @@
 # ud615_dotnetcore
-------
+
 This repo is a result of passing course "Scalable Microservices with Kubernetes". Originally course operates with Go language. This repo contains the same microservices translated to dot net core 2.1. 
 
 ## Original course links
-Course: https://classroom.udacity.com/courses/ud615
-Go version: https://github.com/udacity/ud615
+- Course: https://classroom.udacity.com/courses/ud615
+- Go version: https://github.com/udacity/ud615
 
 ## Changes to original
 
