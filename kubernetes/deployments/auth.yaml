@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth
+        track: stable
+    spec:
+      containers:
+        - name: auth
+          image: "smolsky/ud615_dotnetcore_auth:1.0.0"
+          ports:
+            - name: http
+              containerPort: 80            
+          resources:
+            limits:
+              cpu: 0.2
+              memory: "100Mi"
